@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f8fc">
+  <title>日常安排｜行程與待辦</title>
+  <style>
+    :root{color-scheme:light;--ink:#272438;--muted:#817d8c;--line:#eee9e2;--purple:#7555c8;--purple-soft:#f2edfb;--surface:#fffdfa;--page:#f8f5f0;--green:#347d61;--amber:#ae7130;--shadow:0 18px 50px rgba(61,48,43,.075)}
+    *{box-sizing:border-box}body{margin:0;min-width:320px;background:radial-gradient(ellipse at 12% 0%,rgba(235,221,208,.52),transparent 32rem),var(--page);color:var(--ink);font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;line-height:1.65}button,input,textarea{font:inherit}button{cursor:pointer}
+    .page-shell{width:min(1080px,calc(100% - 40px));margin:0 auto;padding:44px 0 56px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:54px}.brand{display:flex;align-items:center;gap:12px;font-weight:750;letter-spacing:.02em}.brand-mark{display:grid;width:38px;height:38px;place-items:center;border:1px solid #e7def2;border-radius:12px;background:#f2edfb;color:#7555c8;font-size:18px;box-shadow:none}.brand-name{color:#302b3d;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;font-size:18px;font-weight:800;letter-spacing:.015em;line-height:1.2}.today-chip{padding:8px 14px;border:1px solid rgba(225,215,205,.8);border-radius:999px;background:rgba(255,253,250,.76);color:var(--muted);font-size:13px;box-shadow:0 4px 12px rgba(61,48,43,.035)}
+    .welcome{position:relative;margin-bottom:32px;padding:0 0 2px}.eyebrow{display:flex;align-items:center;gap:8px;margin:0 0 9px;color:var(--purple);font-size:11px;font-weight:800;letter-spacing:.18em}.eyebrow-icon{display:grid;width:22px;height:22px;place-items:center;border:1px solid #e8def3;border-radius:8px;background:rgba(255,253,250,.82);font-size:12px;letter-spacing:0}.hero-title-row{display:flex;align-items:center;gap:12px}h1{margin:0;font-size:clamp(29px,5vw,42px);letter-spacing:-.045em;line-height:1.28}.hero-sparkle{flex:0 0 auto;color:#c18b49;font-size:22px;transform:translateY(-2px)}.subtitle{margin:11px 0 0;color:var(--muted);font-size:15px}
+    .dashboard{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:22px;align-items:start}.card{min-width:0;padding:26px;border:1px solid rgba(232,224,216,.82);border-radius:22px;background:rgba(255,253,250,.94);box-shadow:var(--shadow)}.card-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.card-heading h2,.form-heading h2{margin:0;font-size:18px;letter-spacing:-.025em}.count{padding:4px 10px;border:1px solid #e9e0f3;border-radius:999px;background:var(--purple-soft);color:var(--purple);font-size:11px;font-weight:750;white-space:nowrap}
+    .schedule-list,.todo-list{display:grid;gap:11px}.schedule-item{display:grid;grid-template-columns:68px 3px minmax(0,1fr);gap:13px;align-items:stretch;padding:14px 13px;border:1px solid #f0ebe5;border-radius:15px;background:linear-gradient(110deg,#fffdfa,#fff 76%);transition:transform .18s,border-color .18s,box-shadow .18s}.schedule-item:hover{transform:translateY(-2px);border-color:#e1d5ee;box-shadow:0 8px 20px rgba(65,47,84,.055)}.schedule-time{padding-top:2px;color:var(--purple);font-size:12px;font-weight:800;letter-spacing:.025em;white-space:nowrap}.schedule-accent{border-radius:99px;background:#d9cafa}.schedule-item:nth-child(2) .schedule-accent{background:#b8d9c8}.schedule-item:nth-child(3) .schedule-accent{background:#efd1a7}.schedule-title{margin:0;font-size:14px;font-weight:720;overflow-wrap:anywhere}.schedule-note{margin:4px 0 0;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+    .todo-item{display:flex;align-items:flex-start;gap:11px;padding:14px 12px;border:1px solid #f0ebe5;border-radius:15px;background:#fffdfa;transition:border-color .18s,background .18s}.todo-item:hover{border-color:#e2d7ef;background:#fff}.todo-item input{flex:0 0 auto;width:17px;height:17px;margin:4px 0 0;accent-color:var(--purple);cursor:pointer}.todo-copy{min-width:0;flex:1}.todo-title{display:block;font-size:13px;font-weight:650;overflow-wrap:anywhere}.todo-item input:checked+.todo-copy .todo-title{color:#a39eaa;text-decoration:line-through}.status{flex:0 0 auto;margin-left:auto;padding:4px 9px;border-radius:999px;background:#faf0df;color:var(--amber);font-size:10px;font-weight:750;white-space:nowrap}.todo-item input:checked~.status{background:#eaf4ed;color:var(--green)}
+    .form-card{margin-top:22px;background:linear-gradient(125deg,#fffdfa,#fbf8ff)}.form-heading{display:flex;align-items:center;gap:10px;margin-bottom:5px}.plus{display:grid;width:32px;height:32px;place-items:center;border:1px solid #e9e0f3;border-radius:11px;background:var(--purple-soft);color:var(--purple);font-size:20px}.form-intro{margin:0 0 20px;color:var(--muted);font-size:13px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:grid;gap:7px;min-width:0}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:700}.field input,.field textarea{width:100%;min-width:0;padding:11px 12px;border:1px solid #e9e4de;border-radius:12px;outline:none;background:#fffefa;color:var(--ink);transition:border-color .16s,box-shadow .16s}.field input:focus,.field textarea:focus{border-color:#aa94d5;box-shadow:0 0 0 3px rgba(117,85,200,.12)}.field textarea{min-height:76px;resize:vertical}.form-actions{display:flex;justify-content:flex-end;margin-top:17px}.submit-button{padding:10px 17px;border:0;border-radius:12px;background:linear-gradient(135deg,#8061d0,#6749b4);color:white;font-size:13px;font-weight:750;box-shadow:0 6px 15px rgba(103,73,180,.2);transition:box-shadow .15s,transform .15s}.submit-button:hover{transform:translateY(-1px);box-shadow:0 9px 20px rgba(103,73,180,.28)}.footer{margin-top:25px;color:#99929a;font-size:11px;text-align:center}
+    @media(max-width:700px){.page-shell{width:min(calc(100% - 28px),520px);padding:25px 0 36px}.topbar{align-items:flex-start;margin-bottom:30px}.today-chip{max-width:58%;padding:7px 10px;font-size:12px;text-align:center}.dashboard{grid-template-columns:minmax(0,1fr);gap:16px}.card{padding:19px;border-radius:17px}.form-card{margin-top:16px}}
+    @media(max-width:390px){.page-shell{width:calc(100% - 22px)}.brand{gap:9px}.brand-mark{width:34px;height:34px;font-size:16px}.brand-name{font-size:16px;letter-spacing:.01em}.hero-title-row{gap:7px}h1{font-size:clamp(27px,8vw,32px)}.hero-sparkle{font-size:18px}.card{padding:16px}.schedule-item{grid-template-columns:59px 3px minmax(0,1fr);gap:9px;padding:11px 9px}.form-grid{grid-template-columns:minmax(0,1fr)}.field.full{grid-column:auto}}
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <header class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true">▦</span><span class="brand-name">日常安排</span></div><time class="today-chip" id="today-date"></time></header>
+    <section class="welcome" aria-labelledby="page-title"><p class="eyebrow"><span class="eyebrow-icon" aria-hidden="true">☀</span> MY DAILY PLANNER</p><div class="hero-title-row"><h1 id="page-title">把今天，安排得剛剛好。</h1><span class="hero-sparkle" aria-hidden="true">✳</span></div><p class="subtitle">看看今天的行程，完成一件，再一件。</p></section>
+    <div class="dashboard">
+      <section class="card" aria-labelledby="schedule-heading"><div class="card-heading"><h2 id="schedule-heading">今日行程</h2><span class="count" id="schedule-count">3 個安排</span></div>
+        <div class="schedule-list" id="schedule-list">
+          <article class="schedule-item"><time class="schedule-time" datetime="09:00">09:00</time><span class="schedule-accent" aria-hidden="true"></span><div><h3 class="schedule-title">晨間例會</h3><p class="schedule-note">整理本週進度與目標</p></div></article>
+          <article class="schedule-item"><time class="schedule-time" datetime="12:30">12:30</time><span class="schedule-accent" aria-hidden="true"></span><div><h3 class="schedule-title">和小安吃午餐</h3><p class="schedule-note">巷口咖啡廳 · 記得帶筆電</p></div></article>
+          <article class="schedule-item"><time class="schedule-time" datetime="15:00">15:00</time><span class="schedule-accent" aria-hidden="true"></span><div><h3 class="schedule-title">專案設計討論</h3><p class="schedule-note">確認首頁版型與下一步</p></div></article>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="todo-heading"><div class="card-heading"><h2 id="todo-heading">待辦事項</h2><span class="count">3 件待處理</span></div>
+        <div class="todo-list">
+          <label class="todo-item"><input type="checkbox"><span class="todo-copy"><span class="todo-title">回覆客戶的設計確認信</span></span><span class="status">進行中</span></label>
+          <label class="todo-item"><input type="checkbox"><span class="todo-copy"><span class="todo-title">整理會議記錄與待辦</span></span><span class="status">尚未開始</span></label>
+          <label class="todo-item"><input type="checkbox" checked><span class="todo-copy"><span class="todo-title">準備下週簡報素材</span></span><span class="status">已完成</span></label>
+        </div>
+      </section>
+    </div>
+    <section class="card form-card" aria-labelledby="form-heading"><div class="form-heading"><span class="plus" aria-hidden="true">+</span><h2 id="form-heading">新增行程</h2></div>
+      <p class="form-intro">新增今天的安排，完成後會顯示在今日行程中。</p>
+      <form id="schedule-form"><div class="form-grid">
+        <div class="field"><label for="event-title">行程名稱</label><input id="event-title" name="title" type="text" placeholder="例如：和同事喝咖啡" required maxlength="60"></div>
+        <div class="field"><label for="event-time">開始時間</label><input id="event-time" name="time" type="time" required></div>
+        <div class="field full"><label for="event-note">備註 <span style="color:var(--muted);font-weight:400">（選填）</span></label><textarea id="event-note" name="note" placeholder="地點、準備事項或其他提醒" maxlength="160"></textarea></div>
+      </div><div class="form-actions"><button class="submit-button" type="submit">＋ 加入行程</button></div></form>
+    </section>
+    <footer class="footer">純 HTML、CSS 與 JavaScript 製作 · 不需登入或連線服務</footer>
+  </main>
+  <script>
+    (() => {
+      const dateElement = document.getElementById('today-date');
+      const today = new Date();
+      dateElement.dateTime = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, '0'), String(today.getDate()).padStart(2, '0')].join('-');
+      dateElement.textContent = new Intl.DateTimeFormat('zh-TW', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }).format(today);
+
+      const form = document.getElementById('schedule-form');
+      const list = document.getElementById('schedule-list');
+      const count = document.getElementById('schedule-count');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        const data = new FormData(form);
+        const time = String(data.get('time'));
+        const item = document.createElement('article');
+        item.className = 'schedule-item';
+        const timeElement = document.createElement('time');
+        timeElement.className = 'schedule-time';
+        timeElement.dateTime = time;
+        timeElement.textContent = time;
+        const accent = document.createElement('span');
+        accent.className = 'schedule-accent';
+        accent.setAttribute('aria-hidden', 'true');
+        const details = document.createElement('div');
+        const title = document.createElement('h3');
+        title.className = 'schedule-title';
+        title.textContent = String(data.get('title')).trim();
+        details.append(title);
+        const noteText = String(data.get('note')).trim();
+        if (noteText) {
+          const note = document.createElement('p');
+          note.className = 'schedule-note';
+          note.textContent = noteText;
+          details.append(note);
+        }
+        item.append(timeElement, accent, details);
+        const items = [...list.querySelectorAll('.schedule-item'), item];
+        items.sort((a, b) => a.querySelector('time').dateTime.localeCompare(b.querySelector('time').dateTime));
+        list.replaceChildren(...items);
+        count.textContent = `${items.length} 個安排`;
+        form.reset();
+        document.getElementById('event-title').focus();
+      });
+    })();
+  </script>
+</body>
+</html>
